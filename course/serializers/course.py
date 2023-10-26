@@ -3,7 +3,7 @@ from rest_framework import serializers
 from course.models import Course
 
 
-class CourseSerializers(serializers.ModelSerializer):
+class CourseSerializer(serializers.ModelSerializer):
     """
     Сериализатор модели курса для использования в Django REST framework.
     """
