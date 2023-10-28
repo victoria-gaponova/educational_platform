@@ -12,5 +12,6 @@ class CourseViewSet(ModelViewSet):
         queryset (QuerySet): Это набор объектов курсов, предварительно загруженные связанные уроки.
         serializer_class (CourseSerializer): Сериализатор,используемый для преобразования объектов курса в JSON и наоборот.
     """
+
     serializer_class = CourseSerializer
     queryset = Course.objects.all()
