@@ -7,6 +7,7 @@ class CourseSerializer(serializers.ModelSerializer):
     """
     Сериализатор модели курса для использования в Django REST framework.
     """
+
     class Meta:
         model = Course
-        field = '__all__'
+        field = "__all__"
