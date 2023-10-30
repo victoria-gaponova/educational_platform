@@ -73,5 +73,5 @@ class Command(BaseCommand):
                 course=course_or_lesson if is_course else None,
                 lesson=course_or_lesson if not is_course else None,
                 amount=amount,
-                paiment_method=paiment_method,
+                payment_method=paiment_method,
             )
