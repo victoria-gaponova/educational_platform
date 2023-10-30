@@ -24,7 +24,7 @@ class CourseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Course
-        field = "__all__"
+        fields = "__all__"
 
     def get_num_lesson(self, obj):
         """
