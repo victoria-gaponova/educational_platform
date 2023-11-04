@@ -24,13 +24,14 @@ load_dotenv(BASE_DIR / ".env")
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-0ij!ster_9qr8#g%f(_2v(7nr15$!xup!&-4u6qfiwoxh%*epe"
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
 
+DOMAIN_NAME = os.getenv('DOMAIN_NAME')
 # Application definition
 
 INSTALLED_APPS = [
@@ -132,6 +133,8 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 
 AUTH_USER_MODEL = "users.User"
 
