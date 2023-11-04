@@ -12,7 +12,7 @@ class UserRoles(models.TextChoices):
                 MODERATOR (str): Значение роли 'moderator'.
         """
     MEMBER = 'member', _('member')
-    Moderator = 'moderator', _('moderator')
+    MODERATOR = 'moderator', _('moderator')
 
 
 class User(AbstractUser):
