@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -21,14 +22,14 @@ class SubscribeCourseCreateAPIView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
 
     def create(self, request, *args, **kwargs):
-        course_id = kwargs.get('course_id')
-        course = Course.objects.get(pk=course_id)
+        course = get_object_or_404(Course, pk=kwargs['course_id'])
 
         # Проверка подписан ли пользователь уже на этот курс
-        if Subscription.objects.filter(user=request.user, course=course).exists():
-            return Response({'detail': 'Вы уже подписаны на этот курс.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        serializer = self.get_serializer(data={'user': request.user.id, 'course': course_id})
+        if Subscription.objects.filter(user=request.user, course=course).exists():
+            return Response({'detail': 'Вы уже подписаны на этот курс.'}, status=status.HTTP_208_ALREADY_REPORTED)
+
+        serializer = self.get_serializer(data={'user': request.user.id, 'course': kwargs['course_id']})
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
 
