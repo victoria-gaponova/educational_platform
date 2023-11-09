@@ -10,7 +10,7 @@ def validator_scam_url(url):
             - serializers.ValidationError: Вызывается, если URL не начинается с 'https://www.youtube.com/'.
     """
     if not url.startswith('https://www.youtube.com/'):
-        raise serializers.ValidationError('Использование стороннего ресурса!')
+        raise serializers.ValidationError('Использование стороннего ресурса {url} недопустимо!')
 
 
 
