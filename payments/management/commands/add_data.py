@@ -8,6 +8,7 @@ from faker import Faker
 from config import settings
 from course.models import Lesson, Course
 from payments.models import Payment
+from payments.services import create_stripe_session
 from users.models import User, UserRoles
 
 fake = Faker()
@@ -48,7 +49,7 @@ class Command(BaseCommand):
         super_user.set_password(os.getenv('ADMIN_PASSWORD'))
         super_user.save()
 
-        # Создание модератор
+        # Создание модератора
         moderator_user = User.objects.create(
             email=os.getenv('MODERATOR_EMAIL'),
             first_name='Admin',
@@ -103,6 +104,7 @@ class Command(BaseCommand):
 
             is_course = random.choice([True, False])
             course_or_lesson = random.choice(courses) if is_course else random.choice(lessons)
+            session = create_stripe_session(course_or_lesson, user)
 
             Payment.objects.create(
                 user=user,
@@ -111,4 +113,5 @@ class Command(BaseCommand):
                 lesson=course_or_lesson if not is_course else None,
                 amount=amount,
                 payment_method=payment_method,
+                session=session.id
             )
