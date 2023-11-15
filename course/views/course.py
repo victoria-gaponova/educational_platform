@@ -1,10 +1,13 @@
+from rest_framework import status
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 from course.models import Course
 from course.paginators.course import CoursePaginator
 from course.permissions import IsOwner, IsModerator
 from course.serializers.course import CourseSerializer
+from course.tasks import sending_emails_about_updates
 
 
 class CourseViewSet(ModelViewSet):
@@ -19,6 +22,7 @@ class CourseViewSet(ModelViewSet):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
     pagination_class = CoursePaginator
+
     def get_permissions(self):
         """Права доступа"""
         if self.action == "retrieve":
@@ -28,8 +32,14 @@ class CourseViewSet(ModelViewSet):
         elif self.action == "destroy":
             permission_classes = [IsOwner | IsAdminUser]
         elif self.action == "update":
-            permission_classes = [IsOwner | IsAdminUser| IsModerator]
+            permission_classes = [IsOwner | IsAdminUser | IsModerator]
         else:
             permission_classes = [IsAuthenticated]
         return [permission() for permission in permission_classes]
 
+    def perform_update(self, serializer):
+        instance = serializer.save()
+
+        sending_emails_about_updates(instance.pk)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
