@@ -1,6 +1,6 @@
 import stripe
+from django.conf import settings
 
-from config import settings
 from config.settings import STRIPE_API_KEY
 
 
