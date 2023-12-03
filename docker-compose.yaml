@@ -1,0 +1,57 @@
+version: '3.7'
+
+services:
+  db:
+    image: postgres:15
+    container_name: educational_platform_db
+    volumes:
+      - postgresdata:/var/lib/postgresql/data
+    env_file:
+      - .env-non-dev
+    ports:
+      - 5432:5432
+
+  redis:
+    image: redis:7
+    container_name: educational_platform_redis
+
+  educational_platform:
+    container_name: educational_platform_app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env-non-dev
+    ports:
+      - 7777:8000
+    command:
+      - 'docker/app.sh'
+    depends_on:
+      - redis
+      - db
+
+  celery:
+    container_name: educational_platform_celery
+    build:
+      context: .
+    command:
+      - 'docker/celery.sh'
+    env_file:
+      - .env-non-dev
+    depends_on:
+      - educational_platform
+
+
+  celery_beat:
+    container_name: educational_platform_celery_beat
+    build:
+      context: .
+    command:
+      - 'docker/celery_beat.sh'
+    env_file:
+      - .env-non-dev
+    depends_on:
+      - educational_platform
+
+volumes:
+  postgresdata:
