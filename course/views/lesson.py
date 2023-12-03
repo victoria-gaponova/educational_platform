@@ -10,7 +10,7 @@ from course.serializers.lesson import LessonSerializer
 
 class LessonCreateAPIView(generics.CreateAPIView):
     """
-        Представление для получения списка всех уроков.
+        Представление для создания уроков.
         Attributes:
             serializer_class (LessonSerializer): Сериализатор, используемый для преобразования объектов уроков в JSON.
     """
